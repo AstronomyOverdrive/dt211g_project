@@ -1,0 +1,27 @@
+{
+  "name": "dt211g_project",
+  "version": "1.0.0",
+  "description": "Frontend Projekt",
+  "source": "src/index.html",
+  "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
+  "scripts": {
+    "start": "rm -f .parcel-cache/* && parcel",
+    "build": "rm -f dist/* docs/* && parcel build --no-source-maps --public-url ./ && cp dist/* docs/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AstronomyOverdrive/dt211g_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AstronomyOverdrive/dt211g_project/issues"
+  },
+  "homepage": "https://github.com/AstronomyOverdrive/dt211g_project#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.13.3",
+    "parcel": "^2.13.3",
+    "sharp": "^0.33.5"
+  }
+}

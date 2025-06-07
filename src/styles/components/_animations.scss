@@ -1,0 +1,20 @@
+.scroll-down {
+    display: block;
+    animation: move-notification 7s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes move-notification {
+    0% {
+        top: -3.1rem;
+    }
+    10% {
+        top: 0.5rem;
+    }
+    90% {
+        top: 0.5rem;
+    }
+    100% {
+        top: -3.1rem;
+    }
+}

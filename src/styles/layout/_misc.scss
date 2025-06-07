@@ -1,0 +1,11 @@
+/* Import components */
+@use '../components/components';
+
+#notification {
+    @extend .rounded-corners;
+    @extend .center;
+    position: absolute;
+    padding: 1rem;
+    max-height: 3rem;
+    background: red;
+}

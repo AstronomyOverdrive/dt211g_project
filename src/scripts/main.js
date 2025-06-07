@@ -1,5 +1,7 @@
 "use strict";
 
+const NotificationEl = document.getElementById("notification");
+
 // Initialize map and marker
 const map = L.map("map").setView([0.0, 0.0], 10);
 const marker = L.marker([0.0, 0.0]).addTo(map);
@@ -38,7 +40,7 @@ async function makeApiCall(url, sendTo, extraData) {
         }
     } catch (error) {
         console.error(error);
-        // Show notification
+        showNotification("An error occured, please try again later!");
     }
 }
 
@@ -96,6 +98,16 @@ function showPeopleOnISS(data) {
     People.forEach(person => {
         console.log(person.name);
     });
+}
+
+function showNotification(message) {
+    NotificationEl.textContent = message;
+    NotificationEl.classList.remove("hidden");
+    NotificationEl.classList.add("scroll-down");
+    setTimeout(() => {
+        NotificationEl.classList.remove("scroll-down");
+        NotificationEl.classList.add("hidden");
+    }, 7000);
 }
 
 makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");

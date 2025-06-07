@@ -1,6 +1,8 @@
 "use strict";
 
 const NotificationEl = document.getElementById("notification");
+const DataContainer = document.getElementById("data-container");
+const EarthImage = document.getElementById("earth");
 
 // Initialize map and marker
 const map = L.map("map").setView([0.0, 0.0], 10);
@@ -47,11 +49,11 @@ async function makeApiCall(url, sendTo, extraData) {
 function setCoords(data) {
     const CurrentLat = data.iss_position.latitude;
     const CurrentLon = data.iss_position.longitude;
-    console.log(CurrentLat, CurrentLon);
     //getPlaceInfo(CurrentLat, CurrentLon);
-    //makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
+    makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
     //makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
     updateMap(CurrentLat, CurrentLon);
+    DataContainer.classList.remove("hidden");
 }
 
 function getPlaceInfo(lat, lon) {
@@ -90,7 +92,8 @@ function getAvailableImages(data, checkAgainst) {
         "lat": currentInfo.centroid_coordinates.lat
     };
     const Url = `https://epic.gsfc.nasa.gov/archive/natural/${relevantInfo.year}/${relevantInfo.month}/${relevantInfo.day}/png/${relevantInfo.file}.png`;
-    console.log(Url);
+    EarthImage.src = Url;
+    EarthImage.alt = relevantInfo.title;
 }
 
 function showPeopleOnISS(data) {

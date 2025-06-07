@@ -69,7 +69,8 @@ function getAvailableImages(data, checkAgainst) {
         "lon": currentInfo.centroid_coordinates.lon,
         "lat": currentInfo.centroid_coordinates.lat
     };
-    console.log(relevantInfo);
+    const Url = `https://epic.gsfc.nasa.gov/archive/natural/${relevantInfo.year}/${relevantInfo.month}/${relevantInfo.day}/png/${relevantInfo.file}.png`;
+    console.log(Url);
 }
 
 makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");

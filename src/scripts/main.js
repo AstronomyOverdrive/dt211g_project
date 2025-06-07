@@ -17,6 +17,9 @@ async function makeApiCall(url, sendTo, extraData) {
             case "getAvailableImages":
                 getAvailableImages(responseData, extraData);
                 break;
+            case "showPeopleOnISS":
+                showPeopleOnISS(responseData);
+                break;
             default:
                 console.log("Invalid choice!");
         }
@@ -31,7 +34,8 @@ function setCoords(data) {
     const CurrentLon = data.iss_position.longitude;
     console.log(CurrentLat, CurrentLon);
     //getPlaceInfo(CurrentLat, CurrentLon);
-    makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
+    //makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
+    makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
 }
 
 function getPlaceInfo(lat, lon) {
@@ -71,6 +75,13 @@ function getAvailableImages(data, checkAgainst) {
     };
     const Url = `https://epic.gsfc.nasa.gov/archive/natural/${relevantInfo.year}/${relevantInfo.month}/${relevantInfo.day}/png/${relevantInfo.file}.png`;
     console.log(Url);
+}
+
+function showPeopleOnISS(data) {
+    const People = data.people.filter(person => person.craft === "ISS");
+    People.forEach(person => {
+        console.log(person.name);
+    });
 }
 
 makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");

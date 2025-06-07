@@ -1,5 +1,18 @@
 "use strict";
 
+// Initialize map and marker
+const map = L.map("map").setView([0.0, 0.0], 10);
+const marker = L.marker([0.0, 0.0]).addTo(map);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
+}).addTo(map);
+
+function updateMap(lat, lon) {
+    map.panTo([lat, lon]);
+    marker.setLatLng([lat, lon]);
+}
+
 async function makeApiCall(url, sendTo, extraData) {
     try {
         const response = await fetch(url);
@@ -35,7 +48,8 @@ function setCoords(data) {
     console.log(CurrentLat, CurrentLon);
     //getPlaceInfo(CurrentLat, CurrentLon);
     //makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
-    makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
+    //makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
+    updateMap(CurrentLat, CurrentLon);
 }
 
 function getPlaceInfo(lat, lon) {

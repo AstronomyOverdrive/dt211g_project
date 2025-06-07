@@ -1,6 +1,6 @@
 "use strict";
 
-async function makeApiCall(url, sendTo) {
+async function makeApiCall(url, sendTo, extraData) {
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -13,6 +13,9 @@ async function makeApiCall(url, sendTo) {
                 break;
             case "showPlaceInfo":
                 showPlaceInfo(responseData);
+                break;
+            case "getAvailableImages":
+                getAvailableImages(responseData, extraData);
                 break;
             default:
                 console.log("Invalid choice!");
@@ -27,7 +30,8 @@ function setCoords(data) {
     const CurrentLat = data.iss_position.latitude;
     const CurrentLon = data.iss_position.longitude;
     console.log(CurrentLat, CurrentLon);
-    getPlaceInfo(CurrentLat, CurrentLon);
+    //getPlaceInfo(CurrentLat, CurrentLon);
+    makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
 }
 
 function getPlaceInfo(lat, lon) {
@@ -44,6 +48,28 @@ function showPlaceInfo(data) {
     } else {
         console.log("The ISS is currently not over any country.");
     }
+}
+
+function getAvailableImages(data, checkAgainst) {
+    let currentInfo = data[0];
+
+    // Find the image closest to the ISS position
+    data.forEach(imageInfo => {
+        if (Math.abs(checkAgainst - imageInfo.centroid_coordinates.lon) < Math.abs(checkAgainst - currentInfo.centroid_coordinates.lon)) {
+            currentInfo = imageInfo;
+        }
+    });
+
+    const relevantInfo = {
+        "year": currentInfo.date.split(" ")[0].split("-")[0], // YYYY
+        "month": currentInfo.date.split(" ")[0].split("-")[1], // MM
+        "day": currentInfo.date.split(" ")[0].split("-")[2], // DD
+        "file": currentInfo.image,
+        "title": currentInfo.caption,
+        "lon": currentInfo.centroid_coordinates.lon,
+        "lat": currentInfo.centroid_coordinates.lat
+    };
+    console.log(relevantInfo);
 }
 
 makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");

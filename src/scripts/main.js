@@ -11,6 +11,9 @@ async function makeApiCall(url, sendTo) {
             case "setCoords":
                 setCoords(responseData);
                 break;
+            case "showPlaceInfo":
+                showPlaceInfo(responseData);
+                break;
             default:
                 console.log("Invalid choice!");
         }
@@ -24,6 +27,23 @@ function setCoords(data) {
     const CurrentLat = data.iss_position.latitude;
     const CurrentLon = data.iss_position.longitude;
     console.log(CurrentLat, CurrentLon);
+    getPlaceInfo(CurrentLat, CurrentLon);
+}
+
+function getPlaceInfo(lat, lon) {
+    const Url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+    makeApiCall(Url, "showPlaceInfo");
+}
+
+function showPlaceInfo(data) {
+    if (data.address !== undefined) {
+        const Region = data.address.region;
+        const Country = data.address.country;
+        const License = data.licence;
+        console.log("ISS is now over", Region, "in", Country, "Licence", License);
+    } else {
+        console.log("The ISS is currently not over any country.");
+    }
 }
 
 makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");

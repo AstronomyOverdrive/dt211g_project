@@ -5,6 +5,15 @@
 body {
     font-style: $font-stack;
 }
+#warning {
+    color: red;
+    /* Outline text */
+    text-shadow: 1px 1px 0px $dark-text-colour,
+    -1px -1px 0px $dark-text-colour,
+    -1px 1px 0px $dark-text-colour,
+    1px -1px 0px $dark-text-colour;
+    font-size: 1.2rem;
+}
 
 /* Dynamic colours */
 @mixin theme($darkmode) {

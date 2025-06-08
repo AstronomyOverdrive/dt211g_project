@@ -10,6 +10,7 @@ const PosText = document.getElementById("pos-text");
 const ISSHeader = document.getElementById("iss-header");
 const ISSText = document.getElementById("iss-text");
 const Loader = document.getElementById("loader");
+const Warning = document.getElementById("warning");
 const StartScreen = document.getElementById("start");
 const StartBtn = document.getElementById("start-btn");
 const RefreshBtn = document.getElementById("refresh-btn");
@@ -195,6 +196,7 @@ function refreshData() {
 function retrieveData() {
     StartBtn.disabled = true;
     StartBtn.classList.add("hidden");
+    Warning.style.display = "none";
     makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");
 }
 

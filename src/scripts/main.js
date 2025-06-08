@@ -15,6 +15,7 @@ const StartScreen = document.getElementById("start");
 const StartBtn = document.getElementById("start-btn");
 const RefreshBtn = document.getElementById("refresh-btn");
 let canRefresh = true;
+let succesfulResponses = 0;
 
 // Initialize map and marker
 const map = L.map("map").setView([0.0, 0.0], 10);
@@ -30,7 +31,7 @@ function updateMap(lat, lon) {
 }
 
 /**
- * Make API calls using the coordinates from the ISS and change what content is shown on screen
+ * Make API calls using the coordinates from the ISS
  * @param {string} url - Url for the API to fetch data from
  * @param {string} sendTo - Where to send the data
  * @param {string} extraData - Any extra data to pass on to the next function
@@ -65,26 +66,18 @@ async function makeApiCall(url, sendTo, extraData) {
 }
 
 /**
- * Make API calls using the coordinates from the ISS and change what content is shown on screen
+ * Make API calls using the coordinates from the ISS
  * @param {Array} data - Response data from http://api.open-notify.org/iss-now.json
  */
 function setCoords(data) {
     const CurrentLat = data.iss_position.latitude;
     const CurrentLon = data.iss_position.longitude;
-    // Show loader
-    DataContainer.style.display = "none";
-    Loader.style.display = "block";
     // Call functions
     getPlaceInfo(CurrentLat, CurrentLon);
     makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
     makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
     updateMap(CurrentLat, CurrentLon);
-    // Show screen with data
-    Loader.style.display = "none";
-    StartScreen.style.height = 0;
-    DataContainer.style.display = "grid";
-    // Needed for the map to display properly
-    map.invalidateSize();
+    fetchCompleted();
 }
 
 /**
@@ -116,6 +109,7 @@ function showPlaceInfo(data) {
         PosHeader.textContent = "The ISS is currently not over any known country!";
         PosText.textContent = "Please check back again later.";
     }
+    fetchCompleted();
 }
 
 /**
@@ -145,6 +139,7 @@ function getAvailableImages(data, checkAgainst) {
     const Url = `https://epic.gsfc.nasa.gov/archive/natural/${relevantInfo.year}/${relevantInfo.month}/${relevantInfo.day}/png/${relevantInfo.file}.png`;
     EarthImage.src = Url;
     EarthImage.alt = relevantInfo.title;
+    fetchCompleted();
 }
 
 /**
@@ -159,6 +154,7 @@ function showPeopleOnISS(data) {
     });
     ISSHeader.textContent = "ISS Astronauts";
     ISSText.innerText = displayText;
+    fetchCompleted();
 }
 
 /**
@@ -180,13 +176,13 @@ function showNotification(message) {
  */
 function refreshData() {
     if (canRefresh) {
-        RefreshBtn.disabled = true;
         canRefresh = false;
+        // Show loader
+        succesfulResponses = 0;
+        DataContainer.style.display = "none";
+        StartScreen.style.height = "80vh";
+        Loader.style.display = "block";
         makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");
-        setTimeout(() => { // Enable the refresh button again after 10 seconds
-            RefreshBtn.disabled = false;
-            canRefresh = true;
-        }, 10000);
     }
 }
 
@@ -197,7 +193,32 @@ function retrieveData() {
     StartBtn.disabled = true;
     StartBtn.classList.add("hidden");
     Warning.style.display = "none";
+    // Show loader
+    succesfulResponses = 0;
+    DataContainer.style.display = "none";
+    StartScreen.style.height = "80vh";
+    Loader.style.display = "block";
     makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");
+}
+
+/**
+ * Tally amount of completed fetch calls, and show data when done
+ */
+function fetchCompleted() {
+    succesfulResponses += 1;
+    if (succesfulResponses > 3) {
+        // Show screen with data
+        Loader.style.display = "none";
+        StartScreen.style.height = 0;
+        DataContainer.style.display = "grid";
+        // Needed for the map to display properly
+        map.invalidateSize();
+        RefreshBtn.disabled = true;
+        setTimeout(() => { // Enable the refresh button again after 10 seconds
+            RefreshBtn.disabled = false;
+            canRefresh = true;
+        }, 10000);
+    }
 }
 
 // Event listeners

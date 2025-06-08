@@ -1,6 +1,11 @@
 /* Import variables without a prefix */
 @use '../base/variables' as *;
 
+/* Text styling */
+body {
+    font-style: $font-stack;
+}
+
 /* Dynamic colours */
 @mixin theme($darkmode) {
     @if $darkmode {

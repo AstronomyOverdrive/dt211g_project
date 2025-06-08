@@ -1,6 +1,12 @@
 /* Import components */
 @use '../components/components';
 
+/* Text styling */
+main {
+    line-height: 1.3em;
+    font-size: 1.2rem;
+}
+
 /* Notification-box */
 #notification {
     @extend .rounded-corners;
@@ -20,7 +26,7 @@
         @extend .center;
         font-size: 2rem;
         padding: 1rem;
-        margin: calc(40vh - 1.5rem) 0;
+        margin-top: calc(40vh - 3rem);
     }
 }
 

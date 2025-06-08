@@ -105,7 +105,7 @@ function showPlaceInfo(data) {
         const Region = data.address.region;
         const Country = data.address.country;
         const License = data.licence;
-        PosHeader.textContent = "Where is the ISS over?";
+        PosHeader.textContent = "What country is the ISS over?";
         if (data.address.region !== undefined) {
             PosText.innerText = `The ISS is currently over ${Region}, ${Country}.\n${License}`;
         } else {

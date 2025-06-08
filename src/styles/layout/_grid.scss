@@ -18,9 +18,19 @@
             @extend .rounded-corners;
             aspect-ratio: 1/1;
         }
+        p {
+            width: max-content;
+            padding: 0.3em;
+            margin: auto;
+        }
     }
     #grid-info {
         grid-area: info;
+        section {
+            @extend .rounded-corners;
+            width: max-content;
+            padding: 1rem;
+        }
     }
     h2 {
         margin-bottom: 0.5rem;
@@ -34,8 +44,12 @@
 @media only screen and (min-width: 1024px) { /* For viewports over 1024px */
     #data-container {
         grid-template-columns: 2fr 2fr 1fr;
-        grid-template-areas: "map info earth";
+        grid-template-rows: 1fr;
         #grid-map {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 1;
+            grid-row-end: 2;
             #map {
                 width: 95%;
                 height: 95%;
@@ -43,12 +57,25 @@
             }
         }
         #grid-earth {
-            #earth {
-                width: 95%;
+            grid-column-start: 3;
+            grid-column-end: 4;
+            grid-row-start: 1;
+            grid-row-end: 2;
+            div {
                 margin-top: 100%;
+                width: 90%;
+                margin-left: 5%;
+                text-align: center;
+                #earth {
+                    width: 95%;
+                }
             }
         }
         #grid-info {
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 1;
+            grid-row-end: 2;
             margin-top: 25%;
             width: 100%;
             margin-left: 0;
@@ -57,9 +84,13 @@
 }
 @media only screen and (max-width: 1024px) { /* For viewports under 1024px */
     #data-container {
-        grid-template-columns: 1fr;
-        grid-template-areas: "map" "info" "earth";
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
         #grid-map {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            grid-row-start: 1;
+            grid-row-end: 2;
             #map {
                 width: 95%;
                 aspect-ratio: 5/3;
@@ -67,23 +98,44 @@
             }
         }
         #grid-earth {
-            #earth {
-                width: 30%;
-                margin-left: 67.5%;
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 2;
+            grid-row-end: 3;
+            div {
+                margin-top: 1.5rem;
+                width: 80%;
+                margin-left: 10%;
+                text-align: center;
+                #earth {
+                    width: 95%;
+                }
             }
         }
         #grid-info {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 2;
+            grid-row-end: 3;
             margin-top: 0;
             width: 95%;
             margin-left: 2.5%;
+            section {
+                margin-left: 2.5%;
+                width: 95%;
+            }
         }
     }
 }
 @media only screen and (max-width: 600px) { /* For viewports under 600px */
     #data-container {
         grid-template-columns: 1fr;
-        grid-template-areas: "map" "info" "earth";
+        grid-template-rows: 1fr 1fr 1fr;
         #grid-map {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 1;
+            grid-row-end: 2;
             #map {
                 width: 95%;
                 aspect-ratio: 1/1;
@@ -91,15 +143,30 @@
             }
         }
         #grid-earth {
-            #earth {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 3;
+            grid-row-end: 4;
+            div {
+                margin-top: 0;
                 width: 70%;
                 margin-left: 15%;
+                text-align: center;
+                #earth {
+                    width: 95%;
+                }
             }
         }
         #grid-info {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 2;
+            grid-row-end: 3;
             margin-top: 0;
-            width: 95%;
-            margin-left: 2.5%;
+            section {
+                margin-left: 2.5%;
+                width: 95%;
+            }
         }
     }
 }

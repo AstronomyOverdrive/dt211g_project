@@ -3,6 +3,7 @@
 
 header, footer {
     text-align: center;
+    margin: 0;
 }
 
 header {
@@ -19,14 +20,14 @@ header {
     footer {
         position: static;
         height: 10vh;
-        padding: 5vh 0; /* Vertically center */
+        line-height: 10vh;
     }
 }
 @media only screen and (max-width: 1024px) { /* For viewports under 1024px */
     footer {
         position: fixed;
         height: auto;
-        padding: 0;
+        line-height: 1rem;
         bottom: 1rem;
         width: 100vw;
     }

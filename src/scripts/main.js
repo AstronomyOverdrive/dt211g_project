@@ -4,6 +4,10 @@ const NotificationEl = document.getElementById("notification");
 const DataContainer = document.getElementById("data-container");
 const EarthImage = document.getElementById("earth");
 const MapEl = document.getElementById("map");
+const PosHeader = document.getElementById("pos-header");
+const PosText = document.getElementById("pos-text");
+const ISSHeader = document.getElementById("iss-header");
+const ISSText = document.getElementById("iss-text");
 
 // Initialize map and marker
 const map = L.map("map").setView([0.0, 0.0], 10);
@@ -51,9 +55,9 @@ function setCoords(data) {
     DataContainer.classList.add("hidden");
     const CurrentLat = data.iss_position.latitude;
     const CurrentLon = data.iss_position.longitude;
-    //getPlaceInfo(CurrentLat, CurrentLon);
+    getPlaceInfo(CurrentLat, CurrentLon);
     makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
-    //makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
+    makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
     updateMap(CurrentLat, CurrentLon);
     DataContainer.classList.remove("hidden");
     // Needed for it to display properly
@@ -70,9 +74,15 @@ function showPlaceInfo(data) {
         const Region = data.address.region;
         const Country = data.address.country;
         const License = data.licence;
-        console.log("ISS is now over", Region, "in", Country, "Licence", License);
+        PosHeader.textContent = "Where is the ISS over?";
+        if (data.address.region !== undefined) {
+            PosText.innerText = `The ISS is currently over ${Region}, ${Country}.\n${License}`;
+        } else {
+            PosText.innerText = `The ISS is currently over ${Country}.\n${License}`;
+        }
     } else {
-        console.log("The ISS is currently not over any country.");
+        PosHeader.textContent = "The ISS is currently not over any known country!";
+        PosText.textContent = "Please check back again later.";
     }
 }
 
@@ -102,9 +112,12 @@ function getAvailableImages(data, checkAgainst) {
 
 function showPeopleOnISS(data) {
     const People = data.people.filter(person => person.craft === "ISS");
+    let displayText = "Current people on the ISS are:";
     People.forEach(person => {
-        console.log(person.name);
+        displayText += `\n• ${person.name}`;
     });
+    ISSHeader.textContent = "ISS Astronauts";
+    ISSText.innerText = displayText;
 }
 
 function showNotification(message) {

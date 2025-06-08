@@ -4,30 +4,96 @@
 #data-container {
     height: 80vh;
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
     grid-auto-rows: auto;
-    grid-template-areas: "map info earth";
     #grid-map {
         grid-area: map;
         #map {
             @extend .center;
             @extend .rounded-corners;
-            width: 95%;
-            height: 95%;
-            margin-top: 2.5%;
         }
     }
     #grid-earth {
         grid-area: earth;
         #earth {
             @extend .rounded-corners;
-            width: 95%;
             aspect-ratio: 1/1;
-            margin-top: 100%;
         }
     }
     #grid-info {
         grid-area: info;
-        margin-top: 25%;
+    }
+}
+
+/* Responsive design */
+@media only screen and (min-width: 1024px) { /* For viewports over 1024px */
+    #data-container {
+        grid-template-columns: 2fr 2fr 1fr;
+        grid-template-areas: "map info earth";
+        #grid-map {
+            #map {
+                width: 95%;
+                height: 95%;
+                margin-top: 2.5%;
+            }
+        }
+        #grid-earth {
+            #earth {
+                width: 95%;
+                margin-top: 100%;
+            }
+        }
+        #grid-info {
+            margin-top: 25%;
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+}
+@media only screen and (max-width: 1024px) { /* For viewports under 1024px */
+    #data-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: "map" "info" "earth";
+        #grid-map {
+            #map {
+                width: 95%;
+                aspect-ratio: 5/3;
+                margin-top: 2.5%;
+            }
+        }
+        #grid-earth {
+            #earth {
+                width: 30%;
+                margin-left: 67.5%;
+            }
+        }
+        #grid-info {
+            margin-top: 0;
+            width: 95%;
+            margin-left: 2.5%;
+        }
+    }
+}
+@media only screen and (max-width: 600px) { /* For viewports under 600px */
+    #data-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: "map" "info" "earth";
+        #grid-map {
+            #map {
+                width: 95%;
+                aspect-ratio: 1/1;
+                margin-top: 2.5%;
+            }
+        }
+        #grid-earth {
+            #earth {
+                width: 70%;
+                margin-left: 15%;
+            }
+        }
+        #grid-info {
+            margin-top: 0;
+            width: 95%;
+            margin-left: 2.5%;
+        }
     }
 }

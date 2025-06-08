@@ -1,0 +1,33 @@
+/* Import components */
+@use '../components/components';
+
+#data-container {
+    height: 80vh;
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    grid-auto-rows: auto;
+    grid-template-areas: "map info earth";
+    #grid-map {
+        grid-area: map;
+        #map {
+            @extend .center;
+            @extend .rounded-corners;
+            width: 95%;
+            height: 95%;
+            margin-top: 2.5%;
+        }
+    }
+    #grid-earth {
+        grid-area: earth;
+        #earth {
+            @extend .rounded-corners;
+            width: 95%;
+            aspect-ratio: 1/1;
+            margin-top: 100%;
+        }
+    }
+    #grid-info {
+        grid-area: info;
+        margin-top: 25%;
+    }
+}

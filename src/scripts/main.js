@@ -3,6 +3,7 @@
 const NotificationEl = document.getElementById("notification");
 const DataContainer = document.getElementById("data-container");
 const EarthImage = document.getElementById("earth");
+const MapEl = document.getElementById("map");
 
 // Initialize map and marker
 const map = L.map("map").setView([0.0, 0.0], 10);
@@ -47,6 +48,7 @@ async function makeApiCall(url, sendTo, extraData) {
 }
 
 function setCoords(data) {
+    DataContainer.classList.add("hidden");
     const CurrentLat = data.iss_position.latitude;
     const CurrentLon = data.iss_position.longitude;
     //getPlaceInfo(CurrentLat, CurrentLon);
@@ -54,6 +56,8 @@ function setCoords(data) {
     //makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
     updateMap(CurrentLat, CurrentLon);
     DataContainer.classList.remove("hidden");
+    // Needed for it to display properly
+    map.invalidateSize();
 }
 
 function getPlaceInfo(lat, lon) {

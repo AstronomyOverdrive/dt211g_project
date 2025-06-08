@@ -52,20 +52,21 @@
             grid-row-end: 2;
             #map {
                 width: 95%;
-                height: 95%;
-                margin-top: 2.5%;
+                height: 78vh;
+                margin-top: 1vh;
             }
         }
         #grid-earth {
+            position: relative;
             grid-column-start: 3;
             grid-column-end: 4;
             grid-row-start: 1;
             grid-row-end: 2;
             div {
-                margin-top: 100%;
+                position: absolute;
+                bottom: 5%;
                 width: 90%;
-                margin-left: 5%;
-                margin-right: 5%;
+                left: 5%;
                 text-align: center;
                 #earth {
                     width: 95%;

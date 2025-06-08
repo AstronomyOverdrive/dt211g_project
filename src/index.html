@@ -13,11 +13,15 @@
             <h1>Where Is The ISS?</h1>
         </header>
         <main>
+            <div id="start">
+                <button id="start-btn">Get ISS position<span class="load-bar"></span></button>
+            </div>
             <div id="data-container" class="hidden">
                 <div id="grid-info">
                     <section>
                         <h2 id="pos-header"></h2>
                         <p id="pos-text"></p>
+                        <button id="refresh-btn">Refresh<span class="load-bar"></span></button>
                         <h2 id="iss-header"></h2>
                         <p id="iss-text"></p>
                     </section>
@@ -33,6 +37,7 @@
                 </div>
             </div>
             <div id="notification" class="hidden"></div>
+            <div id="loader"></div>
         </main>
         <footer>
             © 2025 William Pettersson

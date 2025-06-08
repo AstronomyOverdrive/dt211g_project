@@ -9,3 +9,27 @@
     max-height: 3rem;
     background: red;
 }
+
+#start {
+    display: block;
+    height: 80vh;
+    width: 100%;
+    #start-btn {
+        @extend .center;
+        font-size: 2rem;
+        padding: 1rem;
+        margin: calc(40vh - 1.5rem) 0;
+    }
+}
+
+#loader {
+    position: absolute;
+    display: none;
+    @extend .center;
+    top: calc(50vh - 2.5rem);
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+    border: 0.5rem solid transparent;
+    border-right: 0.5rem solid lightskyblue;
+}

@@ -3,7 +3,6 @@
     animation: move-notification 7s linear;
     animation-fill-mode: forwards;
 }
-
 @keyframes move-notification {
     0% {
         top: -3.1rem;
@@ -16,5 +15,34 @@
     }
     100% {
         top: -3.1rem;
+    }
+}
+
+button {
+    position: relative;
+    transition: border-bottom 10s;
+    .load-bar {
+        position: relative;
+        width: 0%;
+        display: block;
+        border-bottom: 2px solid lime;
+    }
+}
+button:disabled {
+    .load-bar {
+        transition: 10s linear;
+        width: 100%;
+    }
+}
+
+#loader {
+    animation: rotate-loader 1s linear infinite;
+}
+@keyframes rotate-loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }

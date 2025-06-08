@@ -8,6 +8,11 @@ const PosHeader = document.getElementById("pos-header");
 const PosText = document.getElementById("pos-text");
 const ISSHeader = document.getElementById("iss-header");
 const ISSText = document.getElementById("iss-text");
+const Loader = document.getElementById("loader");
+const StartScreen = document.getElementById("start");
+const StartBtn = document.getElementById("start-btn");
+const RefreshBtn = document.getElementById("refresh-btn");
+let canRefresh = true;
 
 // Initialize map and marker
 const map = L.map("map").setView([0.0, 0.0], 10);
@@ -52,14 +57,17 @@ async function makeApiCall(url, sendTo, extraData) {
 }
 
 function setCoords(data) {
-    DataContainer.classList.add("hidden");
+    DataContainer.style.display = "none";
+    Loader.style.display = "block";
     const CurrentLat = data.iss_position.latitude;
     const CurrentLon = data.iss_position.longitude;
     getPlaceInfo(CurrentLat, CurrentLon);
     makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
     makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
     updateMap(CurrentLat, CurrentLon);
-    DataContainer.classList.remove("hidden");
+    Loader.style.display = "none";
+    StartScreen.style.height = 0;
+    DataContainer.style.display = "grid";
     // Needed for it to display properly
     map.invalidateSize();
 }
@@ -130,4 +138,23 @@ function showNotification(message) {
     }, 7000);
 }
 
-makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");
+function refreshData() {
+    if (canRefresh) {
+        RefreshBtn.disabled = true;
+        canRefresh = false;
+        makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");
+        setTimeout(() => {
+            RefreshBtn.disabled = false;
+            canRefresh = true;
+        }, 10000);
+    }
+}
+
+function retrieveData() {
+    StartBtn.disabled = true;
+    StartBtn.classList.add("hidden");
+    makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");
+}
+
+RefreshBtn.addEventListener('click', refreshData);
+StartBtn.addEventListener('click', retrieveData);

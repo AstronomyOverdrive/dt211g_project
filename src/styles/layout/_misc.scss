@@ -1,6 +1,7 @@
 /* Import components */
 @use '../components/components';
 
+/* Notification-box */
 #notification {
     @extend .rounded-corners;
     @extend .center;
@@ -10,6 +11,7 @@
     background: red;
 }
 
+/* Start screen */
 #start {
     display: block;
     height: 80vh;
@@ -22,6 +24,7 @@
     }
 }
 
+/* Loader */
 #loader {
     position: absolute;
     display: none;

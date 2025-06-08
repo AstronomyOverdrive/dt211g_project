@@ -1,5 +1,6 @@
 "use strict";
 
+// Declare variables
 const NotificationEl = document.getElementById("notification");
 const DataContainer = document.getElementById("data-container");
 const EarthImage = document.getElementById("earth");
@@ -21,12 +22,18 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
 }).addTo(map);
-
+// Update map and marker
 function updateMap(lat, lon) {
     map.panTo([lat, lon]);
     marker.setLatLng([lat, lon]);
 }
 
+/**
+ * Make API calls using the coordinates from the ISS and change what content is shown on screen
+ * @param {string} url - Url for the API to fetch data from
+ * @param {string} sendTo - Where to send the data
+ * @param {string} extraData - Any extra data to pass on to the next function
+ */
 async function makeApiCall(url, sendTo, extraData) {
     try {
         const response = await fetch(url);
@@ -56,27 +63,43 @@ async function makeApiCall(url, sendTo, extraData) {
     }
 }
 
+/**
+ * Make API calls using the coordinates from the ISS and change what content is shown on screen
+ * @param {Array} data - Response data from http://api.open-notify.org/iss-now.json
+ */
 function setCoords(data) {
-    DataContainer.style.display = "none";
-    Loader.style.display = "block";
     const CurrentLat = data.iss_position.latitude;
     const CurrentLon = data.iss_position.longitude;
+    // Show loader
+    DataContainer.style.display = "none";
+    Loader.style.display = "block";
+    // Call functions
     getPlaceInfo(CurrentLat, CurrentLon);
     makeApiCall("https://epic.gsfc.nasa.gov/api/natural", "getAvailableImages", CurrentLon);
     makeApiCall("http://api.open-notify.org/astros.json", "showPeopleOnISS");
     updateMap(CurrentLat, CurrentLon);
+    // Show screen with data
     Loader.style.display = "none";
     StartScreen.style.height = 0;
     DataContainer.style.display = "grid";
-    // Needed for it to display properly
+    // Needed for the map to display properly
     map.invalidateSize();
 }
 
+/**
+ * Get info about the location the ISS is currently over
+ * @param {number} lat - Latitude to get information from
+ * @param {number} lon - Longitude to get information from
+ */
 function getPlaceInfo(lat, lon) {
     const Url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
     makeApiCall(Url, "showPlaceInfo");
 }
 
+/**
+ * Show info about the location the ISS is currently over
+ * @param {Array} data - Response data from https://nominatim.openstreetmap.org/reverse
+ */
 function showPlaceInfo(data) {
     if (data.address !== undefined) {
         const Region = data.address.region;
@@ -94,6 +117,11 @@ function showPlaceInfo(data) {
     }
 }
 
+/**
+ * Find image closest to the position of the ISS
+ * @param {Array} data - Response data from https://epic.gsfc.nasa.gov/api/natural
+ * @param {number} checkAgaints - Longitude to match
+ */
 function getAvailableImages(data, checkAgainst) {
     let currentInfo = data[0];
 
@@ -118,6 +146,10 @@ function getAvailableImages(data, checkAgainst) {
     EarthImage.alt = relevantInfo.title;
 }
 
+/**
+ * Show people on the ISS on screen
+ * @param {Array} data - Response data from http://api.open-notify.org/astros.json
+ */
 function showPeopleOnISS(data) {
     const People = data.people.filter(person => person.craft === "ISS");
     let displayText = "Current people on the ISS are:";
@@ -128,33 +160,44 @@ function showPeopleOnISS(data) {
     ISSText.innerText = displayText;
 }
 
+/**
+ * Show notification on screen
+ * @param {string} message - Text to display in notification
+ */
 function showNotification(message) {
     NotificationEl.textContent = message;
     NotificationEl.classList.remove("hidden");
     NotificationEl.classList.add("scroll-down");
-    setTimeout(() => {
+    setTimeout(() => { // Hide again after 7 seconds
         NotificationEl.classList.remove("scroll-down");
         NotificationEl.classList.add("hidden");
     }, 7000);
 }
 
+/**
+ * Re-fetch API data and disable refresh button for 10s
+ */
 function refreshData() {
     if (canRefresh) {
         RefreshBtn.disabled = true;
         canRefresh = false;
         makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");
-        setTimeout(() => {
+        setTimeout(() => { // Enable the refresh button again after 10 seconds
             RefreshBtn.disabled = false;
             canRefresh = true;
         }, 10000);
     }
 }
 
+/**
+ * Make initial API call and hide start button
+ */
 function retrieveData() {
     StartBtn.disabled = true;
     StartBtn.classList.add("hidden");
     makeApiCall("http://api.open-notify.org/iss-now.json", "setCoords");
 }
 
+// Event listeners
 RefreshBtn.addEventListener('click', refreshData);
 StartBtn.addEventListener('click', retrieveData);

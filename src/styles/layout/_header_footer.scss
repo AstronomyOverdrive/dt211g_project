@@ -10,7 +10,7 @@ header {
     position: static;
     height: 10vh;
     h1 {
-        line-height: 10vh;
+        line-height: 10vh; /* Center vertically */
         margin: 0;
     }
 }
@@ -20,12 +20,12 @@ header {
     footer {
         position: static;
         height: 10vh;
-        line-height: 10vh;
+        line-height: 10vh; /* Center vertically */
     }
 }
 @media only screen and (max-width: 1024px) { /* For viewports under 1024px */
     footer {
-        position: fixed;
+        position: fixed; /* Stick to bottom of the viewport */
         height: auto;
         line-height: 1rem;
         bottom: 1rem;

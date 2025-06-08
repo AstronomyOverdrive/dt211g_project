@@ -1,3 +1,4 @@
+/* Scrolldown notification */
 .scroll-down {
     display: block;
     animation: move-notification 7s linear;
@@ -18,6 +19,7 @@
     }
 }
 
+/* Button cooldown */
 button {
     position: relative;
     transition: border-bottom 10s;
@@ -35,6 +37,7 @@ button:disabled {
     }
 }
 
+/* Loader */
 #loader {
     animation: rotate-loader 1s linear infinite;
 }

@@ -13,12 +13,14 @@
             <h1>Where Is The ISS?</h1>
         </header>
         <main>
+            <!-- Start screen -->
             <div id="start">
                 <button id="start-btn">Get ISS position<span class="load-bar"></span></button>
             </div>
+            <!-- Display screen -->
             <div id="data-container" class="hidden">
                 <div id="grid-info">
-                    <section>
+                    <section> <!-- Infobox -->
                         <h2 id="pos-header"></h2>
                         <p id="pos-text"></p>
                         <button id="refresh-btn">Refresh<span class="load-bar"></span></button>
@@ -36,7 +38,9 @@
                     </div>
                 </div>
             </div>
+            <!-- Dropdown notification -->
             <div id="notification" class="hidden"></div>
+            <!-- Loader -->
             <div id="loader"></div>
         </main>
         <footer>

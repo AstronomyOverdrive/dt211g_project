@@ -24,7 +24,12 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
 }).addTo(map);
-// Update map and marker
+
+/**
+ * Update map and marker
+ * @param {number} lat - Latitude to set
+ * @param {number} lon - Longitude to set
+ */
 function updateMap(lat, lon) {
     map.panTo([lat, lon]);
     marker.setLatLng([lat, lon]);
